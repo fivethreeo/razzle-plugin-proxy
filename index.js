@@ -7,11 +7,12 @@ function modify(defaultConfig, { target, dev }, webpack) {
 
   if ( target==='web' && dev ) {
 
-    const { host: hotDevClientPublic, port } = url.parse(config.output.publicPath);
+    const { host: hotDevClientPublic, port, pathname } = url.parse(config.output.publicPath);
     const hotDevClientPort = port ? port : '';
+    const hotDevClientPath = pathname ? pathname : '/';
 
     config.devServer.public = hotDevClientPublic;
-    
+
     config.module.rules = config.module.rules.reduce((rules, rule) => {
       if (rule.test &&
         rule.test.toString()===/\.(js|jsx|mjs)$/.toString() &&
@@ -25,15 +26,27 @@ function modify(defaultConfig, { target, dev }, webpack) {
 
         rules.push({ ...rest, ...{
           use: [ ...use, {
-            loader: require.resolve('string-replace-loader'),
-            options: {
-              search: 'port: parseInt(process.env.PORT || window.location.port, 10) + 1,'
-                .replace(/[-[\]{}()*+!<=:?.\/\\^$|#\s,]/g, '\\$&'),
-              replace: `port: '${hotDevClientPort}',`,
-              flags: 'g',
-              strict: true
+              loader: require.resolve('string-replace-loader'),
+              options: {
+                multiple: [
+                  {
+                    search: 'port: parseInt(process.env.PORT || window.location.port, 10) + 1,'
+                      .replace(/[-[\]{}()*+!<=:?.\/\\^$|#\s,]/g, '\\$&'),
+                    replace: `port: '${hotDevClientPort}',`,
+                    flags: 'g',
+                    strict: true
+                  },
+                  {
+                    search: 'pathname: \'/sockjs-node\','
+                      .replace(/[-[\]{}()*+!<=:?.\/\\^$|#\s,]/g, '\\$&'),
+                    replace: `pathname: '${hotDevClientPath}sockjs-node',`,
+                    flags: 'g',
+                    strict: true
+                  }
+                ]
+              }
             }
-          }],
+          ],
           include: /razzle-dev-utils\/webpackHotDevClient\.js/,
         }});
       }
