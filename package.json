@@ -1,0 +1,27 @@
+{
+  "name": "razzle-plugin-proxy",
+  "version": "1.0.4",
+  "description": "This package contains a plugin to run the webpack devserver behind a reverse proxy",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fivethreeo/razzle-plugin-proxy.git"
+	},
+  "keywords": [
+    "razzle",
+    "plugin",
+		"proxy"
+  ],
+  "author": "Øyvind Saltvik <oyvind.saltvik@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fivethreeo/razzle-plugin-proxy/issues"
+	},
+  "homepage": "https://github.com/fivethreeo/razzle-plugin-proxy#readme",
+  "dependencies": {
+    "string-replace-loader": "^2.2.0"
+  }
+}
