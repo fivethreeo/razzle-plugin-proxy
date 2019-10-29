@@ -12,7 +12,7 @@ create a **razzle.config.js** file in root directory of project (next to the *pa
 
 Using the plugin
 
-Set ```bash CLIENT_PUBLIC_PATH=https://www.example.com/webpack``` and proxy port 3001 to the backend.
+Set `CLIENT_PUBLIC_PATH=https://www.example.com/webpack` and proxy port 3001 to the backend.
 
 
 ```javascript
