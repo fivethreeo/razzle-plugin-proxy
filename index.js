@@ -21,7 +21,7 @@ function modify(defaultConfig, { target, dev }, webpack) {
         const { use, ...rest } = rule;
 
         rules.push({ ...rule, ...{
-          exclude: /razzle-dev-utils\/webpackHotDevClient\.js/
+          exclude: [ /razzle-dev-utils\/webpackHotDevClient\.js/ ]
         }});
 
         rules.push({ ...rest, ...{
@@ -47,7 +47,7 @@ function modify(defaultConfig, { target, dev }, webpack) {
               }
             }
           ],
-          include: /razzle-dev-utils\/webpackHotDevClient\.js/,
+          include: [ /razzle-dev-utils\/webpackHotDevClient\.js/ ],
         }});
       }
       else {
