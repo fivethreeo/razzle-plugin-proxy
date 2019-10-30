@@ -1,6 +1,6 @@
 {
   "name": "razzle-plugin-proxy",
-  "version": "1.0.7",
+  "version": "1.1.0",
   "description": "This package contains a plugin to run the webpack devserver behind a reverse proxy",
   "main": "index.js",
   "scripts": {

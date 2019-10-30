@@ -13,6 +13,8 @@ function modify(defaultConfig, { target, dev }, webpack) {
 
     config.devServer.public = hotDevClientPublic;
 
+    config.devServer.sockPath = `${hotDevClientPath}/sockjs-node`;
+
     config.module.rules = config.module.rules.reduce((rules, rule) => {
       if (rule.test &&
         rule.test.toString()===/\.(js|jsx|mjs)$/.toString() &&
