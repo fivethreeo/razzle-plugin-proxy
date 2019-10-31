@@ -16,7 +16,20 @@ function modify(defaultConfig, { target, dev }, webpack) {
     config.devServer.sockPath = `${hotDevClientPath}/sockjs-node`;
 
     config.module.rules = config.module.rules.reduce((rules, rule) => {
-      if (rule.test &&
+
+      if (rule.loader
+        && /file-loader|url-loader/.test(rule.loader)
+        && rule.options && rule.options.name
+        && /^static/.test(rule.options.name)) {
+
+        const { options, ...newrule } = rule;
+
+       const publicPath = config.output.publicPath
+         .substring(0,config.output.publicPath.lastIndexOf('/') +1);
+
+        rules.push({ options: { publicPath: publicPath, ...newoptions}, ...newrule});
+      }
+      else if (rule.test &&
         rule.test.toString()===/\.(js|jsx|mjs)$/.toString() &&
         !rule.enforce) {
 
