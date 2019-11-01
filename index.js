@@ -11,32 +11,23 @@ function modify(defaultConfig, { target, dev }, webpack) {
     const hotDevClientPort = port ? port : '';
     const hotDevClientPath = pathname ? pathname : '/';
 
+    config.devServer.quiet = false;
     config.devServer.public = hotDevClientPublic;
-
-    config.devServer.sockPath = `${hotDevClientPath}/sockjs-node`;
+    // upgrade webpack dev server sockPath 3.1.4 -> 3.2.0
+    // config.devServer.sockPath = `${hotDevClientPath}/sockjs-node`;
 
     config.module.rules = config.module.rules.reduce((rules, rule) => {
-
-      if (rule.loader
-        && /file-loader|url-loader/.test(rule.loader)
-        && rule.options && rule.options.name
-        && /^static/.test(rule.options.name)) {
-
-        const { options, ...newrule } = rule;
-
-       const publicPath = config.output.publicPath
-         .substring(0,config.output.publicPath.lastIndexOf('/') +1);
-
-        rules.push({ options: { publicPath: publicPath, ...newoptions}, ...newrule});
-      }
-      else if (rule.test &&
+      
+      if (rule.test &&
         rule.test.toString()===/\.(js|jsx|mjs)$/.toString() &&
         !rule.enforce) {
 
         const { use, ...rest } = rule;
 
         rules.push({ ...rule, ...{
-          exclude: [ /razzle-dev-utils\/webpackHotDevClient\.js/ ]
+          exclude: [
+            /razzle-dev-utils\/webpackHotDevClient\.js/,
+            /webpack-dev-server\/client\/utils\/createSocketUrl\.js/          ]
         }});
 
         rules.push({ ...rest, ...{
@@ -62,7 +53,28 @@ function modify(defaultConfig, { target, dev }, webpack) {
               }
             }
           ],
-          include: [ /razzle-dev-utils\/webpackHotDevClient\.js/ ],
+          include: [
+            /razzle-dev-utils\/webpackHotDevClient\.js/,
+          ],
+        }});        rules.push({ ...rest, ...{
+          use: [ ...use, {
+              loader: require.resolve('string-replace-loader'),
+              options: {
+                multiple: [
+                  {
+                    search: 'var sockPath = \'\/sockjs-node\';'
+                      .replace(/[-[\]{}()*+!<=:?.\/\\^$|#\s,]/g, '\\$&'),
+                    replace: `var sockPath = \'${hotDevClientPath}sockjs-node\';`,
+                    flags: 'g',
+                    strict: true
+                  }
+                ]
+              }
+            }
+          ],
+          include: [
+            /webpack-dev-server\/client\/utils\/createSocketUrl\.js/
+          ],
         }});
       }
       else {
