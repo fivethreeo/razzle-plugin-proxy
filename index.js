@@ -40,14 +40,14 @@ function modify(defaultConfig, { target, dev }, webpack) {
                       .replace(/[-[\]{}()*+!<=:?.\/\\^$|#\s,]/g, '\\$&'),
                     replace: `port: '${hotDevClientPort}',`,
                     flags: 'g',
-                    strict: hotDevClientPath !== '/'
+                    strict: true
                   },
                   {
                     search: 'pathname: \'/sockjs-node\','
                       .replace(/[-[\]{}()*+!<=:?.\/\\^$|#\s,]/g, '\\$&'),
                     replace: `pathname: '${hotDevClientPath}sockjs-node',`,
                     flags: 'g',
-                    strict: hotDevClientPath !== '/'
+                    strict: true
                   }
                 ]
               }
@@ -68,7 +68,7 @@ function modify(defaultConfig, { target, dev }, webpack) {
                       .replace(/[-[\]{}()*+!<=:?.\/\\^$|#\s,]/g, '\\$&'),
                     replace: `var sockPath = \'${hotDevClientPath}sockjs-node\';`,
                     flags: 'g',
-                    strict: hotDevClientPath !== '/'
+                    strict: true
                   }
                 ]
               }
