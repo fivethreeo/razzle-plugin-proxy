@@ -40,14 +40,14 @@ function modify(defaultConfig, { target, dev }, webpack) {
                       .replace(/[-[\]{}()*+!<=:?.\/\\^$|#\s,]/g, '\\$&'),
                     replace: `port: '${hotDevClientPort}',`,
                     flags: 'g',
-                    strict: true
+                    strict: hotDevClientPath !== '/'
                   },
                   {
                     search: 'pathname: \'/sockjs-node\','
                       .replace(/[-[\]{}()*+!<=:?.\/\\^$|#\s,]/g, '\\$&'),
                     replace: `pathname: '${hotDevClientPath}sockjs-node',`,
                     flags: 'g',
-                    strict: true
+                    strict: hotDevClientPath !== '/'
                   }
                 ]
               }
@@ -56,7 +56,9 @@ function modify(defaultConfig, { target, dev }, webpack) {
           include: [
             /razzle-dev-utils\/webpackHotDevClient\.js/,
           ],
-        }});        rules.push({ ...rest, ...{
+        }});
+
+        rules.push({ ...rest, ...{
           use: [ ...use, {
               loader: require.resolve('string-replace-loader'),
               options: {
@@ -66,7 +68,7 @@ function modify(defaultConfig, { target, dev }, webpack) {
                       .replace(/[-[\]{}()*+!<=:?.\/\\^$|#\s,]/g, '\\$&'),
                     replace: `var sockPath = \'${hotDevClientPath}sockjs-node\';`,
                     flags: 'g',
-                    strict: true
+                    strict: hotDevClientPath !== '/'
                   }
                 ]
               }
