@@ -36,7 +36,7 @@ yarn add razzle-plugin-proxy
 
 echo PUBLIC_PATH=https://razzle.hongri.no/testrazzle/ > .env
 
-echo CLIENT_PUBLIC_PATH=https://razzle.hongri.no/testrazzle/webpack/ > .env
+echo CLIENT_PUBLIC_PATH=https://razzle.hongri.no/testrazzle/webpack/ >> .env
 
 export CERTS_VOLUME=nginx_certs
 export VHOST_D_VOLUME=nginx_vhost_d
