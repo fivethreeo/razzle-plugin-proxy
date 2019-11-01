@@ -3,7 +3,7 @@ sudo npm install -g npx
 create-razzle-app testrazzle
 cd testrazzle
 
-yarn add razzle-plugin-proxy
+yarn add razzle-plugin-proxy --dev
 
 echo PUBLIC_PATH=https://razzle.hongri.no/testrazzle/ > .env
 echo CLIENT_PUBLIC_PATH=https://razzle.hongri.no/testrazzle/webpack/ >> .env
