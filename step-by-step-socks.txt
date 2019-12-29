@@ -57,7 +57,6 @@ server {
   }     
 }
 EOF
-EOF
 
 cat << EOF > docker-compose.yml
 version: "3.7"
@@ -69,14 +68,16 @@ services:
      - "80:80"
     volumes:
       - ./default.conf:/etc/nginx/conf.d/default.conf
-    networks:
-      - dockernet
     environment:
       VIRTUAL_HOST: ${VIRTUAL_HOST}
+
+    networks:
+      - dockernet
 
 networks:
   dockernet:
     external: true
+    name: dockernet
 
 EOF
 
@@ -85,6 +86,7 @@ version: "3.7"
 
 services:
   nginx-proxy:
+    restart: always
     image: jwilder/nginx-proxy
     ports:
      - "80:80"
@@ -96,9 +98,12 @@ services:
       - /var/run/docker.sock:/tmp/docker.sock:ro
     labels:
       - com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy
-      
+
+    networks:
+      - dockernet
 
   nginx-proxy-letsencrypt:
+    restart: always
     image: jrcs/letsencrypt-nginx-proxy-companion
     volumes:
       - certs:/etc/nginx/certs
@@ -107,7 +112,16 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     environment:
       DEFAULT_EMAIL: ${LETSENCRYPT_DEFAULT_EMAIL}
-      
+    depends_on:
+      - nginx-proxy
+
+    networks:
+      - dockernet
+
+networks:
+  dockernet:
+    external: true
+    name: dockernet
 volumes:
   certs:
     external:
@@ -133,6 +147,9 @@ services:
     environment:
       VIRTUAL_HOST: ${VIRTUAL_HOST}
       LETSENCRYPT_HOST: ${VIRTUAL_HOST}
+
+    networks:
+      - dockernet
 
 EOF
 
