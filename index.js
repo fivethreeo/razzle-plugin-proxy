@@ -13,11 +13,31 @@ function modify(defaultConfig, { target, dev }, webpack) {
 
     config.devServer.quiet = false;
     config.devServer.public = hotDevClientPublic;
-    // upgrade webpack dev server sockPath 3.1.4 -> 3.2.0
-    // config.devServer.sockPath = `${hotDevClientPath}/sockjs-node`;
+    config.devServer.sockPath = `${hotDevClientPath}/sockjs-node`;
 
+    let replacements = [
+      {
+        search: 'port: parseInt(process.env.PORT || window.location.port, 10) + 1,'
+          .replace(/[-[\]{}()*+!<=:?.\/\\^$|#\s,]/g, '\\$&'),
+        replace: `port: '${hotDevClientPort}',`,
+        flags: 'g',
+        strict: true
+      }
+    ]
+
+    if (hotDevClientPath !== '/') {
+      replacements.push(
+        {
+          search: 'pathname: \'/sockjs-node\','
+            .replace(/[-[\]{}()*+!<=:?.\/\\^$|#\s,]/g, '\\$&'),
+          replace: `pathname: '${hotDevClientPath}sockjs-node',`,
+          flags: 'g',
+          strict: true
+        }
+      )
+    }
     config.module.rules = config.module.rules.reduce((rules, rule) => {
-      
+
       if (rule.test &&
         rule.test.toString()===/\.(js|jsx|mjs)$/.toString() &&
         !rule.enforce) {
@@ -33,22 +53,7 @@ function modify(defaultConfig, { target, dev }, webpack) {
           use: [ ...use, {
               loader: require.resolve('string-replace-loader'),
               options: {
-                multiple: [
-                  {
-                    search: 'port: parseInt(process.env.PORT || window.location.port, 10) + 1,'
-                      .replace(/[-[\]{}()*+!<=:?.\/\\^$|#\s,]/g, '\\$&'),
-                    replace: `port: '${hotDevClientPort}',`,
-                    flags: 'g',
-                    strict: true
-                  },
-                  {
-                    search: 'pathname: \'/sockjs-node\','
-                      .replace(/[-[\]{}()*+!<=:?.\/\\^$|#\s,]/g, '\\$&'),
-                    replace: `pathname: '${hotDevClientPath}sockjs-node',`,
-                    flags: 'g',
-                    strict: true
-                  }
-                ]
+                multiple: replacements
               }
             }
           ],
@@ -59,7 +64,7 @@ function modify(defaultConfig, { target, dev }, webpack) {
       }
       else {
         rules.push(rule);
-      } 
+      }
       return rules;
     }, []);
   }
