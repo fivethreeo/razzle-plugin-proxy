@@ -47,6 +47,7 @@ function modify(defaultConfig, { target, dev }, webpack) {
         rules.push({ ...rule, ...{
           exclude: [
             /razzle-dev-utils\/webpackHotDevClient\.js/,
+          ]
         }});
 
         rules.push({ ...rest, ...{
