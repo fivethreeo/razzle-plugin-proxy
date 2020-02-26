@@ -69,8 +69,8 @@ server {
   }     
 
   
-  location /testrazzle/webpack/sockjs-node/ {
-    proxy_pass http://10.0.0.1:3001/sockjs-node/;
+  location /testrazzle/webpack/static/ {
+    proxy_pass http://10.0.0.1:3001/static/;
     proxy_http_version 1.1;
     proxy_set_header Upgrade \$http_upgrade;
     proxy_set_header Connection 'upgrade';
