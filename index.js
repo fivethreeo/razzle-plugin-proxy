@@ -27,7 +27,6 @@ function modify(defaultConfig, { target, dev }, webpack) {
         rules.push({ ...rule, ...{
           exclude: [
             /razzle-dev-utils\/webpackHotDevClient\.js/,
-            /webpack-dev-server\/client\/utils\/createSocketUrl\.js/          ]
         }});
 
         rules.push({ ...rest, ...{
@@ -55,27 +54,6 @@ function modify(defaultConfig, { target, dev }, webpack) {
           ],
           include: [
             /razzle-dev-utils\/webpackHotDevClient\.js/,
-          ],
-        }});
-
-        rules.push({ ...rest, ...{
-          use: [ ...use, {
-              loader: require.resolve('string-replace-loader'),
-              options: {
-                multiple: [
-                  {
-                    search: 'var sockPath = \'\/sockjs-node\';'
-                      .replace(/[-[\]{}()*+!<=:?.\/\\^$|#\s,]/g, '\\$&'),
-                    replace: `var sockPath = \'${hotDevClientPath}sockjs-node\';`,
-                    flags: 'g',
-                    strict: true
-                  }
-                ]
-              }
-            }
-          ],
-          include: [
-            /webpack-dev-server\/client\/utils\/createSocketUrl\.js/
           ],
         }});
       }
