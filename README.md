@@ -60,7 +60,7 @@ server {
   server_name ${VIRTUAL_HOST};
   
   location /testrazzle/webpack/ {
-    proxy_pass http://10.0.0.1:3001/;
+    proxy_pass http://10.0.0.1:3001/webpack/;
     proxy_http_version 1.1;
     proxy_set_header Upgrade \$http_upgrade;
     proxy_set_header Connection 'upgrade';
