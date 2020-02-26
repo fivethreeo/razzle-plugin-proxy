@@ -13,7 +13,7 @@ function modify(defaultConfig, { target, dev }, webpack) {
 
     config.devServer.quiet = false;
     config.devServer.public = hotDevClientPublic;
-    config.devServer.sockPath = `${hotDevClientPath}/sockjs-node`;
+    config.devServer.sockPath = `${hotDevClientPath}sockjs-node`;
 
     let replacements = [
       {
