@@ -1,6 +1,6 @@
 {
   "name": "razzle-plugin-proxy",
-  "version": "1.4.0-alpha.0",
+  "version": "1.4.0-alpha.1",
   "description": "This package contains a plugin to run the webpack devserver behind a reverse proxy",
   "main": "index.js",
   "scripts": {
@@ -23,5 +23,8 @@
   "homepage": "https://github.com/fivethreeo/razzle-plugin-proxy#readme",
   "dependencies": {
     "string-replace-loader": "^2.2.0"
+  },
+  "peerDependencies": {
+    "webpack-dev-server": "^3.10.3"
   }
 }
