@@ -1,4 +1,7 @@
-[![npm version](https://badge.fury.io/js/razzle-plugin-proxy.svg)](https://badge.fury.io/js/razzle-plugin-proxy)
+# DEPRECATED
+
+Razzle can easily be customized to work this way now. See [with-single-exposed-port](https://github.com/jaredpalmer/razzle/tree/next/examples/with-single-exposed-port) and
+[with-custom-devserver-options](https://github.com/jaredpalmer/razzle/tree/next/examples/with-custom-devserver-options)
 
 # razzle-plugin-proxy
 This package contains a plugin to run the webpack devserver behind a reverse proxy
@@ -58,7 +61,7 @@ cat << EOF > default.conf
 server {
   listen 80;
   server_name ${VIRTUAL_HOST};
-  
+
   location /testrazzle/webpack/ {
     proxy_pass http://10.0.0.1:3001/webpack/;
     proxy_http_version 1.1;
@@ -68,7 +71,7 @@ server {
     proxy_cache_bypass \$http_upgrade;
   }     
 
-  
+
   location /testrazzle/webpack/static/ {
     proxy_pass http://10.0.0.1:3001/static/;
     proxy_http_version 1.1;
@@ -123,7 +126,7 @@ services:
       - /var/run/docker.sock:/tmp/docker.sock:ro
     labels:
       - com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy
-      
+
 
   nginx-proxy-letsencrypt:
     image: jrcs/letsencrypt-nginx-proxy-companion
@@ -134,7 +137,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     environment:
       DEFAULT_EMAIL: ${LETSENCRYPT_DEFAULT_EMAIL}
-      
+
 volumes:
   certs:
     external:
@@ -156,13 +159,13 @@ sudo docker-compose -f docker-compose.yml up -d
 
 sudo docker-compose -f docker-compose.proxy.yml up -d
 
-``` 
+```
 
 change
 
 ```jsx
 <Route exact path="/" component={Home} />
-``` 
+```
 to
 
 ```jsx
@@ -170,7 +173,7 @@ to
 ```
 in App.js
 
-Add 
+Add
 
 ```html
   <link rel="shortcut icon" href="/testrazzle/static/favicon.ico">
